@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ギャラリー | 盤上研究室</title>
+<meta name="robots" content="noai, noimageai">
+<meta name="description" content="囲碁・将棋・チェスの局面や盤面の記録ギャラリー。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --yellow: #FFC93C;
+    --yellow-deep: #FFAF00;
+    --green-deep: #163A2E;
+    --green-mid: #24573F;
+    --green-pop: #2F7A54;
+    --cream: #FFFCF3;
+    --ink: #17251C;
+    --accent-red: #E4572E;
+    --radius: 18px;
+    --shadow: 6px 6px 0 var(--green-deep);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP", sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.8;
+  }
+  h1,h2,h3,.logo,.tag{ font-family:"Zen Maru Gothic", sans-serif; }
+  a{color:inherit;}
+
+  .board-strip{
+    height:14px; width:100%;
+    background-image: repeating-conic-gradient(var(--yellow) 0% 25%, var(--green-deep) 0% 50%);
+    background-size: 28px 28px;
+  }
+
+  header{ position:sticky; top:0; z-index:50; background:var(--cream); border-bottom:4px solid var(--green-deep); }
+  nav{ max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-size:1.4rem; font-weight:900; color:var(--green-deep); display:flex; align-items:center; gap:10px; }
+  .logo .dot{ width:16px;height:16px;border-radius:50%; background:var(--accent-red); display:inline-block; box-shadow:0 0 0 4px var(--yellow); }
+  .nav-links{ display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+  .nav-links a{ text-decoration:none; font-weight:700; font-size:.95rem; color:var(--green-deep); padding:8px 16px; border-radius:999px; transition:.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible{ background:var(--yellow); outline:none; }
+  .nav-links a.current{ background:var(--green-deep); color:var(--cream); }
+
+  .page-hero{
+    background:var(--green-deep);
+    color:var(--cream);
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .page-hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 90% 20%, rgba(255,201,60,.16) 0, transparent 42%);
+    pointer-events:none;
+  }
+  .page-hero-inner{ max-width:760px; margin:0 auto; position:relative; }
+  .eyebrow{
+    display:inline-block; font-family:"Fredoka", sans-serif; font-weight:600;
+    font-size:.8rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--green-deep); background:var(--yellow); padding:6px 16px; border-radius:999px; margin-bottom:18px;
+  }
+  .page-hero h1{ font-size:clamp(1.9rem,4.4vw,2.6rem); font-weight:900; margin:0 0 14px; }
+  .page-hero p{ margin:0; color:#DCEAE0; max-width:52ch; }
+
+  main{ max-width:1100px; margin:0 auto; padding:56px 24px 100px; }
+
+  /* filter tabs */
+  .filters{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-bottom:40px;
+  }
+  .filters button{
+    font-family:"Zen Maru Gothic", sans-serif;
+    font-weight:700;
+    font-size:.85rem;
+    border:2px solid var(--green-deep);
+    background:transparent;
+    color:var(--green-deep);
+    padding:8px 18px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .filters button:hover{ background:var(--yellow); border-color:var(--yellow); }
+  .filters button.active{ background:var(--green-deep); color:var(--cream); }
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:26px;
+  }
+  .g-card{
+    background:var(--cream);
+    border:3px solid var(--green-deep);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .g-card:hover{ transform:translate(-3px,-3px); box-shadow:9px 9px 0 var(--green-deep); }
+
+  /* CSS-drawn board diagrams (placeholders until real images are added) */
+  .g-visual{
+    aspect-ratio:1/1;
+    position:relative;
+    background:var(--green-mid);
+    display:grid;
+  }
+  .g-visual.go{ grid-template-columns:repeat(9,1fr); grid-template-rows:repeat(9,1fr); background:#E8C782; padding:10px; }
+  .g-visual.go span{ border:1px solid rgba(0,0,0,.35); position:relative; }
+  .g-visual.go .stone{
+    position:absolute; border-radius:50%;
+    width:78%; aspect-ratio:1; top:11%; left:11%;
+    box-shadow:0 2px 0 rgba(0,0,0,.35);
+  }
+  .g-visual.go .stone.b{ background:var(--ink); }
+  .g-visual.go .stone.w{ background:#fdfdfa; border:1px solid #c9c2ab; }
+
+  .g-visual.shogi{ grid-template-columns:repeat(9,1fr); grid-template-rows:repeat(9,1fr); background:#E8C782; padding:8px; }
+  .g-visual.shogi span{ border:1px solid rgba(0,0,0,.3); }
+  .g-visual.shogi .koma{
+    position:absolute;
+    width:70%; height:80%;
+    background:#f4e4bf;
+    border:1px solid var(--ink);
+    clip-path: polygon(50% 0%, 100% 22%, 88% 100%, 12% 100%, 0% 22%);
+  }
+
+  .g-visual.chess{ grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); }
+  .g-visual.chess span:nth-child(odd){ background:var(--yellow); }
+  .g-visual.chess span:nth-child(even){ background:var(--green-deep); }
+  .g-visual.chess span:nth-child(16n+1),
+  .g-visual.chess span:nth-child(16n+3),
+  .g-visual.chess span:nth-child(16n+5),
+  .g-visual.chess span:nth-child(16n+7){ background:var(--green-deep); }
+  .g-visual.chess span:nth-child(16n+2),
+  .g-visual.chess span:nth-child(16n+4),
+  .g-visual.chess span:nth-child(16n+6),
+  .g-visual.chess span:nth-child(16n+8){ background:var(--yellow); }
+
+  .g-body{ padding:18px 20px 22px; }
+  .g-tag{
+    display:inline-block; font-size:.7rem; font-weight:700; color:var(--green-deep);
+    background:var(--yellow); padding:2px 10px; border-radius:999px; margin-bottom:8px;
+  }
+  .g-body h3{ margin:0 0 6px; font-size:1.02rem; color:var(--green-deep); }
+  .g-body p{ margin:0; font-size:.85rem; color:#4a5a4e; }
+
+  .note{
+    margin-top:50px;
+    border:2px dashed var(--green-mid);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    font-size:.88rem;
+    color:#3c4b40;
+  }
+
+  @media (max-width:600px){ .nav-links{ display:none; } }
+
+  footer{ background:var(--ink); color:#cfe0d3; padding:60px 24px 40px; }
+  .footer-inner{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; }
+  footer h4{ font-family:"Zen Maru Gothic", sans-serif; color:var(--yellow); margin:0 0 14px; font-size:1rem; }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:8px; }
+  footer a{ text-decoration:none; color:#cfe0d3; font-size:.92rem; }
+  footer a:hover{ color:var(--yellow); }
+  .footer-bottom{
+    max-width:1100px; margin:40px auto 0; padding-top:24px; border-top:1px solid #33453a;
+    font-size:.78rem; color:#7d9084; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
+  }
+  @media (max-width:760px){ .footer-inner{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="board-strip"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>盤上研究室</div>
+    <ul class="nav-links">
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="blog.html">日誌</a></li>
+      <li><a href="gallery.html" class="current">ギャラリー</a></li>
+      <li><a href="about.html">about</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">gallery</span>
+    <h1>局面ギャラリー</h1>
+    <p>印象に残った局面や、練習した定石・型の記録。図はイメージ用の簡易表示です。</p>
+  </div>
+</div>
+
+<main>
+  <div class="filters">
+    <button class="active" data-filter="all">すべて</button>
+    <button data-filter="go">囲碁</button>
+    <button data-filter="shogi">将棋</button>
+    <button data-filter="chess">チェス</button>
+  </div>
+
+  <div class="gallery-grid" id="grid">
+
+    <div class="g-card" data-cat="go">
+      <div class="g-visual go" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span class="stone b" style="position:relative; top:0; left:0;"></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span class="stone w" style="position:relative; top:0; left:0;"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="g-body">
+        <span class="g-tag">囲碁</span>
+        <h3>三々への打ち込み</h3>
+        <p>隅の攻防をどう受けるか、繰り返し確認している型。</p>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="shogi">
+      <div class="g-visual shogi" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="g-body">
+        <span class="g-tag">将棋</span>
+        <h3>四間飛車の基本形</h3>
+        <p>振り飛車側の玉の囲い方を確認するための並べ直し。</p>
+      </div>
+    </div>
+
+    <div class="g-card" data-cat="chess">
+      <div class="g-visual chess" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="g-body">
+        <span class="g-tag">チェス</span>
+        <h3>イタリアン・ゲーム</h3>
+        <p>中盤の方針づくりに苦労した一局のオープニング形。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">※ 図は仮のイメージ表示です。実際の対局写真や棋譜画像が増え次第、順次差し替えていきます。</p>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>盤上研究室</h4>
+      <p style="font-size:.88rem; max-width:32ch;">ボードゲームをじっくり学ぶための個人研究サイトです。焦らず、一手ずつ。</p>
+    </div>
+    <div>
+      <h4>サイト内</h4>
+      <ul>
+        <li><a href="index.html">ホーム</a></li>
+        <li><a href="blog.html">学習日誌</a></li>
+        <li><a href="gallery.html">ギャラリー</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Azalea Creative Room</h4>
+      <ul>
+        <li><a href="https://azaleacreativeroom888.github.io/" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 盤上研究室</span>
+    <span>本サイトのコンテンツはAI学習への利用を禁じます / No AI training on this content.</span>
+  </div>
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('.filters button');
+  const cards = document.querySelectorAll('.g-card');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c=>{
+        c.style.display = (f==='all' || c.dataset.cat===f) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
