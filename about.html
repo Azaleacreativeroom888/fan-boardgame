@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>about | 盤上研究室</title>
+<meta name="robots" content="noai, noimageai">
+<meta name="description" content="盤上研究室について。運営者の自己紹介とお問い合わせフォーム。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --yellow: #FFC93C;
+    --yellow-deep: #FFAF00;
+    --green-deep: #163A2E;
+    --green-mid: #24573F;
+    --green-pop: #2F7A54;
+    --cream: #FFFCF3;
+    --ink: #17251C;
+    --accent-red: #E4572E;
+    --radius: 18px;
+    --shadow: 6px 6px 0 var(--green-deep);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP", sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.8;
+  }
+  h1,h2,h3,.logo,.tag{ font-family:"Zen Maru Gothic", sans-serif; }
+  a{color:inherit;}
+
+  .board-strip{
+    height:14px; width:100%;
+    background-image: repeating-conic-gradient(var(--yellow) 0% 25%, var(--green-deep) 0% 50%);
+    background-size: 28px 28px;
+  }
+
+  header{ position:sticky; top:0; z-index:50; background:var(--cream); border-bottom:4px solid var(--green-deep); }
+  nav{ max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-size:1.4rem; font-weight:900; color:var(--green-deep); display:flex; align-items:center; gap:10px; }
+  .logo .dot{ width:16px;height:16px;border-radius:50%; background:var(--accent-red); display:inline-block; box-shadow:0 0 0 4px var(--yellow); }
+  .nav-links{ display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+  .nav-links a{ text-decoration:none; font-weight:700; font-size:.95rem; color:var(--green-deep); padding:8px 16px; border-radius:999px; transition:.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible{ background:var(--yellow); outline:none; }
+  .nav-links a.current{ background:var(--green-deep); color:var(--cream); }
+
+  .page-hero{
+    background:var(--green-deep);
+    color:var(--cream);
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .page-hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 90% 20%, rgba(255,201,60,.16) 0, transparent 42%);
+    pointer-events:none;
+  }
+  .page-hero-inner{ max-width:760px; margin:0 auto; position:relative; }
+  .eyebrow{
+    display:inline-block; font-family:"Fredoka", sans-serif; font-weight:600;
+    font-size:.8rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--green-deep); background:var(--yellow); padding:6px 16px; border-radius:999px; margin-bottom:18px;
+  }
+  .page-hero h1{ font-size:clamp(1.9rem,4.4vw,2.6rem); font-weight:900; margin:0 0 14px; }
+  .page-hero p{ margin:0; color:#DCEAE0; max-width:52ch; }
+
+  main{ max-width:760px; margin:0 auto; padding:56px 24px 100px; }
+
+  section{ margin-bottom:56px; }
+  .section-label{
+    display:flex; align-items:center; gap:12px;
+    font-family:"Fredoka", sans-serif;
+    font-size:.78rem; font-weight:600; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--green-mid);
+    margin-bottom:18px;
+  }
+  .section-label::after{
+    content:""; flex:1; height:2px; background:repeating-linear-gradient(90deg, var(--yellow) 0 6px, transparent 6px 12px);
+  }
+
+  .profile-card{
+    background:var(--cream);
+    border:3px solid var(--green-deep);
+    border-radius:var(--radius);
+    padding:28px 26px;
+    box-shadow:var(--shadow);
+  }
+  .profile-card h2{ margin:0 0 12px; color:var(--green-deep); font-size:1.3rem; }
+  .profile-card p{ margin:0 0 12px; font-size:.96rem; }
+  .profile-card p:last-child{ margin-bottom:0; }
+
+  .tag-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .tag-row span{
+    font-size:.78rem; font-weight:700; color:var(--green-deep);
+    background:var(--yellow); padding:4px 14px; border-radius:999px;
+  }
+
+  .why-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px;
+  }
+  .why-card{
+    border:3px solid var(--green-deep);
+    border-radius:var(--radius);
+    padding:20px;
+    background:var(--cream);
+    box-shadow:var(--shadow);
+  }
+  .why-card .mark{
+    font-family:"Fredoka", sans-serif;
+    font-weight:700;
+    color:var(--cream);
+    background:var(--green-deep);
+    width:32px; height:32px;
+    display:inline-flex; align-items:center; justify-content:center;
+    border-radius:50%;
+    font-size:.85rem;
+    margin-bottom:10px;
+  }
+  .why-card h3{ margin:0 0 6px; font-size:1rem; color:var(--green-deep); }
+  .why-card p{ margin:0; font-size:.88rem; color:#4a5a4e; }
+
+  /* contact form */
+  .form-card{
+    background:var(--green-deep);
+    border-radius:var(--radius);
+    padding:32px 28px;
+    color:var(--cream);
+    position:relative;
+    overflow:hidden;
+  }
+  .form-card::after{
+    content:"";
+    position:absolute; right:-30px; bottom:-30px;
+    width:160px; height:160px;
+    background:repeating-conic-gradient(var(--yellow) 0% 25%, transparent 0% 50%);
+    background-size:22px 22px;
+    opacity:.18;
+    border-radius:50%;
+  }
+  .form-intro{ font-size:.92rem; color:#DCEAE0; margin-bottom:22px; position:relative; }
+  .form-group{ margin-bottom:16px; position:relative; }
+  .form-label{
+    display:block; font-family:"Fredoka", sans-serif; font-weight:600;
+    font-size:.78rem; letter-spacing:.06em; color:var(--yellow); margin-bottom:6px;
+  }
+  .required{ color:var(--accent-red); }
+  .form-input, .form-textarea{
+    width:100%;
+    background:var(--cream);
+    border:2px solid transparent;
+    border-radius:10px;
+    color:var(--ink);
+    font-family:"Noto Sans JP", sans-serif;
+    font-size:.94rem;
+    padding:11px 14px;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s;
+  }
+  .form-input::placeholder, .form-textarea::placeholder{ color:#9aa89e; }
+  .form-input:focus, .form-textarea:focus{
+    border-color:var(--yellow);
+    box-shadow:0 0 0 4px rgba(255,201,60,.25);
+  }
+  .form-textarea{ resize:vertical; min-height:130px; }
+  .field-error{ display:block; font-size:.76rem; color:#FFB4A0; margin-top:5px; }
+
+  .form-submit{
+    font-family:"Zen Maru Gothic", sans-serif;
+    font-weight:700;
+    background:var(--yellow);
+    color:var(--green-deep);
+    border:none;
+    border-radius:999px;
+    padding:12px 30px;
+    font-size:.94rem;
+    cursor:pointer;
+    box-shadow:5px 5px 0 rgba(0,0,0,.25);
+    transition:transform .15s ease, box-shadow .15s ease;
+    margin-top:6px;
+  }
+  .form-submit:hover{ transform:translate(-2px,-2px); box-shadow:7px 7px 0 rgba(0,0,0,.25); }
+  .form-submit:disabled{ opacity:.5; cursor:not-allowed; }
+
+  .form-success{
+    background:rgba(255,201,60,.14);
+    border:2px solid var(--yellow);
+    border-radius:12px;
+    padding:16px 18px;
+    text-align:center;
+    color:var(--yellow);
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .form-error-global{
+    background:rgba(228,87,46,.16);
+    border:2px solid var(--accent-red);
+    border-radius:12px;
+    padding:12px 16px;
+    color:#FFC9BB;
+    font-size:.88rem;
+    margin-bottom:16px;
+  }
+
+  @media (max-width:600px){ .nav-links{ display:none; } }
+
+  footer{ background:var(--ink); color:#cfe0d3; padding:60px 24px 40px; }
+  .footer-inner{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; }
+  footer h4{ font-family:"Zen Maru Gothic", sans-serif; color:var(--yellow); margin:0 0 14px; font-size:1rem; }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:8px; }
+  footer a{ text-decoration:none; color:#cfe0d3; font-size:.92rem; }
+  footer a:hover{ color:var(--yellow); }
+  .footer-bottom{
+    max-width:1100px; margin:40px auto 0; padding-top:24px; border-top:1px solid #33453a;
+    font-size:.78rem; color:#7d9084; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
+  }
+  @media (max-width:760px){ .footer-inner{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="board-strip"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>盤上研究室</div>
+    <ul class="nav-links">
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="blog.html">日誌</a></li>
+      <li><a href="gallery.html">ギャラリー</a></li>
+      <li><a href="about.html" class="current">about</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">about</span>
+    <h1>このサイトについて</h1>
+    <p>盤上研究室は、囲碁・将棋・チェスなどの盤上ゲームを自分のペースで学びなおすための個人サイトです。</p>
+  </div>
+</div>
+
+<main>
+
+  <section>
+    <p class="section-label">運営者</p>
+    <div class="profile-card">
+      <h2>ごあいさつ</h2>
+      <p>はじめまして。盤上研究室の運営者です。もともとは何となく眺めていた囲碁や将棋の対局を、もう少しちゃんと理解したいと思ったのがこのサイトを始めたきっかけです。</p>
+      <p>強くなることをゴールにするというより、「なぜその一手が良いのか」を自分の言葉で説明できるようになることを大事にしています。上達はゆっくりですが、気づいたことを日誌やギャラリーに残しながら、少しずつ記録を積み重ねていく予定です。</p>
+      <div class="tag-row">
+        <span>囲碁</span>
+        <span>将棋</span>
+        <span>チェス</span>
+        <span>ボードゲーム全般</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">なぜ盤上ゲームか</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="mark">1</span>
+        <h3>考える時間そのものが楽しい</h3>
+        <p>正解がすぐに出ない分、じっくり考える時間を味わえるところが好きです。</p>
+      </div>
+      <div class="why-card">
+        <span class="mark">2</span>
+        <h3>積み重ねが見える</h3>
+        <p>棋譜や日誌として記録が残るので、自分の変化を後から振り返りやすいです。</p>
+      </div>
+      <div class="why-card">
+        <span class="mark">3</span>
+        <h3>創作にも生きる</h3>
+        <p>盤面を読む力や構成を考える感覚が、他の創作活動にもつながっている気がします。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">お問い合わせ</p>
+    <div class="form-card">
+      <p class="form-intro">ご質問・ご感想などがあれば、こちらのフォームからお気軽にどうぞ。</p>
+
+      <div data-fs-success class="form-success" style="display:none;">
+        メッセージを送信しました。ありがとうございます！
+      </div>
+      <div data-fs-error class="form-error-global" style="display:none;"></div>
+
+      <form id="contact-form" action="https://formspree.io/f/maqvpvoz" method="POST">
+        <div class="form-group">
+          <label class="form-label" for="name">お名前</label>
+          <input class="form-input" type="text" id="name" name="name" placeholder="お名前">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="email">メールアドレス <span class="required">*</span></label>
+          <input class="form-input" type="email" id="email" name="email" data-fs-field placeholder="example@email.com" required>
+          <span data-fs-error="email" class="field-error"></span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="message">メッセージ <span class="required">*</span></label>
+          <textarea class="form-textarea" id="message" name="message" data-fs-field placeholder="メッセージを入力してください…" rows="6" required></textarea>
+          <span data-fs-error="message" class="field-error"></span>
+        </div>
+        <button class="form-submit" type="submit" data-fs-submit-btn>送信する</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>盤上研究室</h4>
+      <p style="font-size:.88rem; max-width:32ch;">ボードゲームをじっくり学ぶための個人研究サイトです。焦らず、一手ずつ。</p>
+    </div>
+    <div>
+      <h4>サイト内</h4>
+      <ul>
+        <li><a href="index.html">ホーム</a></li>
+        <li><a href="blog.html">学習日誌</a></li>
+        <li><a href="gallery.html">ギャラリー</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Azalea Creative Room</h4>
+      <ul>
+        <li><a href="https://azaleacreativeroom888.github.io/" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 盤上研究室</span>
+    <span>本サイトのコンテンツはAI学習への利用を禁じます / No AI training on this content.</span>
+  </div>
+</footer>
+
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'maqvpvoz' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>
