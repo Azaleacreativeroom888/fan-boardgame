@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プレーしたゲームの感想 | 盤上研究室</title>
+<meta name="robots" content="noai, noimageai">
+<meta name="description" content="実際に遊んだボードゲームの名前と解説をまとめたページ。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --yellow: #FFC93C;
+    --yellow-deep: #FFAF00;
+    --green-deep: #163A2E;
+    --green-mid: #24573F;
+    --green-pop: #2F7A54;
+    --cream: #FFFCF3;
+    --ink: #17251C;
+    --accent-red: #E4572E;
+    --radius: 18px;
+    --shadow: 6px 6px 0 var(--green-deep);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:"Noto Sans JP", sans-serif;
+    color:var(--ink);
+    background:var(--cream);
+    line-height:1.8;
+  }
+  h1,h2,h3,.logo,.tag{ font-family:"Zen Maru Gothic", sans-serif; }
+  a{color:inherit;}
+
+  .board-strip{
+    height:14px; width:100%;
+    background-image: repeating-conic-gradient(var(--yellow) 0% 25%, var(--green-deep) 0% 50%);
+    background-size: 28px 28px;
+  }
+
+  header{ position:sticky; top:0; z-index:50; background:var(--cream); border-bottom:4px solid var(--green-deep); }
+  nav{ max-width:1100px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-size:1.4rem; font-weight:900; color:var(--green-deep); display:flex; align-items:center; gap:10px; }
+  .logo .dot{ width:16px;height:16px;border-radius:50%; background:var(--accent-red); display:inline-block; box-shadow:0 0 0 4px var(--yellow); }
+  .nav-links{ display:flex; gap:6px; list-style:none; margin:0; padding:0; }
+  .nav-links a{ text-decoration:none; font-weight:700; font-size:.95rem; color:var(--green-deep); padding:8px 16px; border-radius:999px; transition:.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible{ background:var(--yellow); outline:none; }
+  .nav-links a.current{ background:var(--green-deep); color:var(--cream); }
+
+  .page-hero{
+    background:var(--green-deep);
+    color:var(--cream);
+    padding:64px 24px 56px;
+    position:relative;
+    overflow:hidden;
+  }
+  .page-hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image: radial-gradient(circle at 90% 20%, rgba(255,201,60,.16) 0, transparent 42%);
+    pointer-events:none;
+  }
+  .page-hero-inner{ max-width:760px; margin:0 auto; position:relative; }
+  .eyebrow{
+    display:inline-block; font-family:"Fredoka", sans-serif; font-weight:600;
+    font-size:.8rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--green-deep); background:var(--yellow); padding:6px 16px; border-radius:999px; margin-bottom:18px;
+  }
+  .page-hero h1{ font-size:clamp(1.9rem,4.4vw,2.6rem); font-weight:900; margin:0 0 14px; }
+  .page-hero p{ margin:0; color:#DCEAE0; max-width:52ch; }
+
+  main{ max-width:760px; margin:0 auto; padding:56px 24px 100px; }
+
+  .report-list{ display:grid; gap:28px; }
+
+  .report-card{
+    background:var(--cream);
+    border:3px solid var(--green-deep);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .report-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--yellow);
+    border-bottom:3px solid var(--green-deep);
+    padding:14px 22px;
+  }
+  .report-num{
+    flex-shrink:0;
+    width:34px; height:34px;
+    border-radius:50%;
+    background:var(--green-deep);
+    color:var(--yellow);
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:.9rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .field-label{
+    display:block;
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:.7rem;
+    letter-spacing:.12em;
+    color:var(--green-mid);
+  }
+  .report-name{
+    margin:0;
+    font-size:1.25rem;
+    font-weight:900;
+    color:var(--green-deep);
+    line-height:1.4;
+  }
+  .report-body{ padding:20px 24px 24px; }
+  .report-body .field-label{ margin-bottom:6px; color:var(--accent-red); }
+  .report-body p{ margin:0; font-size:.96rem; }
+
+  .back-link{
+    display:inline-block;
+    margin-top:44px;
+    text-decoration:none;
+    font-family:"Zen Maru Gothic", sans-serif;
+    font-weight:700;
+    color:var(--green-deep);
+    border:2px solid var(--green-deep);
+    border-radius:999px;
+    padding:10px 22px;
+    transition:.18s;
+  }
+  .back-link:hover{ background:var(--yellow); border-color:var(--yellow); }
+
+  @media (max-width:600px){ .nav-links{ display:none; } }
+
+  footer{ background:var(--ink); color:#cfe0d3; padding:60px 24px 40px; }
+  .footer-inner{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; }
+  footer h4{ font-family:"Zen Maru Gothic", sans-serif; color:var(--yellow); margin:0 0 14px; font-size:1rem; }
+  footer ul{ list-style:none; margin:0; padding:0; }
+  footer li{ margin-bottom:8px; }
+  footer a{ text-decoration:none; color:#cfe0d3; font-size:.92rem; }
+  footer a:hover{ color:var(--yellow); }
+  .footer-bottom{
+    max-width:1100px; margin:40px auto 0; padding-top:24px; border-top:1px solid #33453a;
+    font-size:.78rem; color:#7d9084; display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between;
+  }
+  @media (max-width:760px){ .footer-inner{ grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<div class="board-strip"></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="dot"></span>盤上研究室</div>
+    <ul class="nav-links">
+      <li><a href="index.html">ホーム</a></li>
+      <li><a href="blog.html">日誌</a></li>
+      <li><a href="gallery.html" class="current">ギャラリー</a></li>
+      <li><a href="about.html">about</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <span class="eyebrow">report 01</span>
+    <h1>プレーしたゲームの感想</h1>
+    <p>実際に遊んだボードゲームを、名前と解説でまとめていきます。</p>
+  </div>
+</div>
+
+<main>
+  <div class="report-list">
+
+    <article class="report-card">
+      <div class="report-head">
+        <span class="report-num">1</span>
+        <div>
+          <span class="field-label">① ボードゲームの名前</span>
+          <h2 class="report-name">囲碁</h2>
+        </div>
+      </div>
+      <div class="report-body">
+        <span class="field-label">② 解説</span>
+        <p>黒と白の石を交互に置き、盤上の陣地(地)の広さを競うゲーム。ルールは単純ですが、石の働きや全体のバランスを考える奥深さがあります。</p>
+      </div>
+    </article>
+
+    <article class="report-card">
+      <div class="report-head">
+        <span class="report-num">2</span>
+        <div>
+          <span class="field-label">① ボードゲームの名前</span>
+          <h2 class="report-name">将棋</h2>
+        </div>
+      </div>
+      <div class="report-body">
+        <span class="field-label">② 解説</span>
+        <p>相手の王将を詰ませたほうが勝ちとなる二人用ゲーム。取った駒を自分の持ち駒として再利用できるのが大きな特徴です。</p>
+      </div>
+    </article>
+
+    <article class="report-card">
+      <div class="report-head">
+        <span class="report-num">3</span>
+        <div>
+          <span class="field-label">① ボードゲームの名前</span>
+          <h2 class="report-name">チェス</h2>
+        </div>
+      </div>
+      <div class="report-body">
+        <span class="field-label">② 解説</span>
+        <p>8×8のマスの上で駒を動かし、相手のキングを追い詰める(チェックメイト)ゲーム。駒ごとに動き方が違い、序盤の定跡(オープニング)も豊富です。</p>
+      </div>
+    </article>
+
+  </div>
+
+  <a class="back-link" href="gallery.html">← ギャラリーに戻る</a>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>盤上研究室</h4>
+      <p style="font-size:.88rem; max-width:32ch;">ボードゲームをじっくり学ぶための個人研究サイトです。焦らず、一手ずつ。</p>
+    </div>
+    <div>
+      <h4>サイト内</h4>
+      <ul>
+        <li><a href="index.html">ホーム</a></li>
+        <li><a href="blog.html">学習日誌</a></li>
+        <li><a href="gallery.html">ギャラリー</a></li>
+        <li><a href="about.html">about</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Azalea Creative Room</h4>
+      <ul>
+        <li><a href="https://azaleacreativeroom888.github.io/" target="_blank" rel="noopener">Azalea Creative Room</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 盤上研究室</span>
+    <span>本サイトのコンテンツはAI学習への利用を禁じます / No AI training on this content.</span>
+  </div>
+</footer>
+
+</body>
+</html>
