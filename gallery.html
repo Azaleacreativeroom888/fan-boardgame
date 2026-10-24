@@ -73,6 +73,68 @@
 
   main{ max-width:1100px; margin:0 auto; padding:56px 24px 100px; }
 
+  /* report link box */
+  .report-link{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    text-decoration:none;
+    background:var(--yellow);
+    color:var(--green-deep);
+    border:3px solid var(--green-deep);
+    border-radius:var(--radius);
+    padding:22px 26px;
+    box-shadow:var(--shadow);
+    margin-bottom:44px;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .report-link:hover, .report-link:focus-visible{
+    transform:translate(-3px,-3px);
+    box-shadow:9px 9px 0 var(--green-deep);
+    outline:none;
+  }
+  .report-link .r-mark{
+    flex-shrink:0;
+    width:52px; height:52px;
+    border-radius:50%;
+    background:var(--green-deep);
+    color:var(--yellow);
+    font-family:"Fredoka", sans-serif;
+    font-weight:700;
+    font-size:.8rem;
+    display:flex; align-items:center; justify-content:center;
+    letter-spacing:.04em;
+  }
+  .report-link .r-text{ flex:1; min-width:0; }
+  .report-link .r-label{
+    display:block;
+    font-family:"Fredoka", sans-serif;
+    font-weight:600;
+    font-size:.72rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    opacity:.75;
+  }
+  .report-link .r-title{
+    display:block;
+    font-family:"Zen Maru Gothic", sans-serif;
+    font-weight:900;
+    font-size:1.2rem;
+  }
+  .report-link .r-desc{ display:block; font-size:.85rem; margin-top:2px; }
+  .report-link .r-arrow{
+    flex-shrink:0;
+    font-family:"Fredoka", sans-serif;
+    font-weight:700;
+    font-size:1.6rem;
+    transition:transform .18s ease;
+  }
+  .report-link:hover .r-arrow{ transform:translateX(4px); }
+  @media (max-width:600px){
+    .report-link{ padding:18px; gap:14px; }
+    .report-link .r-mark{ width:44px; height:44px; }
+  }
+
   /* filter tabs */
   .filters{
     display:flex; gap:10px; flex-wrap:wrap;
@@ -205,6 +267,16 @@
 </div>
 
 <main>
+  <a class="report-link" href="report1.html">
+    <span class="r-mark">R1</span>
+    <span class="r-text">
+      <span class="r-label">report</span>
+      <span class="r-title">プレーしたゲームの感想</span>
+      <span class="r-desc">実際に遊んだボードゲームの感想をまとめたページです。</span>
+    </span>
+    <span class="r-arrow" aria-hidden="true">→</span>
+  </a>
+
   <div class="filters">
     <button class="active" data-filter="all">すべて</button>
     <button data-filter="go">囲碁</button>
